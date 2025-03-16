@@ -23,7 +23,7 @@ const router = createBrowserRouter(
           <Route path="/create" element={<Create />} />
         </Route>
     </>
-  )
+  ), {basename: "/heroed"}
 );
 
 function App() {
