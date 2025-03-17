@@ -15,22 +15,23 @@ import { ThemeProvider } from "@/components/theme-provider";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/signup" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/heroes" element={<Hero />} />
-          <Route path="/create" element={<Create />} />
-        </Route>
-    </>
-  ), {basename: "/heroed"}
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="/signup" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/heroes" element={<Hero />} />
+        <Route path="/create" element={<Create />} />
+      </Route>
+    </>,
+  ),
+  { basename: "/heroed" },
 );
 
 function App() {
   return (
     <>
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <RouterProvider router={router} />
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <RouterProvider router={router} />
       </ThemeProvider>
     </>
   );

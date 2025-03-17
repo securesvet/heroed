@@ -11,15 +11,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { toast } from "sonner";
-import {  Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const formDefaultSchema = {
   username: z.string().min(3, {
@@ -42,7 +35,6 @@ export function RegisterForm() {
 
   function onSubmit(data: z.infer<typeof formRegisterSchema>) {
     localStorage.setItem("user", JSON.stringify(data));
-    // setOpenPopup(true);
     toast("You have successfully registered", {
       description: "Sunday, December 03, 2023 at 9:00 AM",
       action: {
@@ -117,29 +109,6 @@ const loginFormSchema = z.object({
     .min(3, { message: "at least 3 characters long" }),
   password: formDefaultSchema.password,
 });
-
-function Popup({
-  open,
-  onOpenChange,
-  title,
-  description,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  title: string;
-  description: string;
-}) {
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
-  );
-}
 
 export function LoginForm() {
   const form = useForm<z.infer<typeof loginFormSchema>>({
