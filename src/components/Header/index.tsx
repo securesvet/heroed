@@ -12,12 +12,9 @@ const Header = () => {
         <Link to="/">Header</Link>
         </div>
         <div className="flex items-center justify-evenly w-60">
-          <div className="flex w-38 justify-between">
+          <div className="flex w-38 justify-end">
             {!["/login", "/signup"].includes(location.pathname) && (
-              <>
                 <ButtonWithLink text="Sign in" link="/login" />
-                <ButtonWithLink text="Sign up" link="/signup" />
-              </>
             )}
           </div>
           <div className="">

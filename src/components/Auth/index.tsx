@@ -15,7 +15,7 @@ const RegisterOrLogin = ({ variant }: { variant: "register" | "login" }) => {
   const link = isLogin ? "/signup" : "/login";
   return (
     <div className="h-screen flex flex-col items-center justify-center gap-4">
-      <div className="text-xl font-bold">
+      <div className="text-4xl font-bold">
         <h1>{isLogin ? "Sign in" : "Sign up"}</h1>
       </div>
       {isLogin ? <LoginForm /> : <RegisterForm />}
@@ -27,12 +27,12 @@ const RegisterOrLogin = ({ variant }: { variant: "register" | "login" }) => {
           {isLogin ? (
             <p>
               Don't have an account?
-              <br /> Register
+              <br /> <span className="font-bold">Register</span>
             </p>
           ) : (
             <p>
               Already have an account?
-              <br /> Login
+              <br /> <span className="font-bold">Login</span>
             </p>
           )}
         </Button>

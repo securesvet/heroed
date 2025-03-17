@@ -7,24 +7,28 @@ import {
 } from "@/components/ui/carousel";
 
 const characterSprites = [
-  "/sprites/character1.png",
-  "/sprites/character2.png",
-  "/sprites/character3.png",
+  "/heroed/sprites/character1.png",
+  "/heroed/sprites/character2.png",
+  "/heroed/sprites/character3.png",
 ];
 
 const CharacterCreator = () => {
   return (
-    <Carousel className="flex justify-center items-center h-full w-1/2">
-      <CarouselContent>
-        {characterSprites.map((sprite, index) => (
-          <CarouselItem key={index}>
-            <img src={sprite} />
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+    <div className="h-[calc(100vh-var(--header-height))] grid place-items-center gap-2">
+      <Carousel className="flex justify-center items-center h-full w-1/2">
+        <div className="w-40 h-40">
+          <CarouselContent>
+            {characterSprites.map((sprite, index) => (
+              <CarouselItem key={index}>
+                <img src={sprite} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </div>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+    </div>
   );
 };
 

@@ -18,7 +18,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { toast } from "sonner";
+import {  Toaster } from "@/components/ui/sonner";
 
 const formDefaultSchema = {
   username: z.string().min(3, {
@@ -35,27 +36,26 @@ const formRegisterSchema = z.object({
 });
 
 export function RegisterForm() {
-  const [openPopup, setOpenPopup] = useState(false);
   const form = useForm<z.infer<typeof formRegisterSchema>>({
     resolver: zodResolver(formRegisterSchema),
   });
 
   function onSubmit(data: z.infer<typeof formRegisterSchema>) {
     localStorage.setItem("user", JSON.stringify(data));
-    setOpenPopup(true);
+    // setOpenPopup(true);
+    toast("You have successfully registered", {
+      description: "Sunday, December 03, 2023 at 9:00 AM",
+      action: {
+        label: "Undo",
+        onClick: () => console.log("Undo"),
+      },
+    });
     console.log(data);
   }
 
   return (
     <>
-      {openPopup && (
-        <Popup
-          open={openPopup}
-          onOpenChange={setOpenPopup}
-          title={"Registration Successful"}
-          description={"Check Email to verify account"}
-        />
-      )}
+      <Toaster />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-2">
           <FormField
