@@ -37,10 +37,11 @@ const formRegisterSchema = z.object({
 export function RegisterForm() {
   const [openPopup, setOpenPopup] = useState(false);
   const form = useForm<z.infer<typeof formRegisterSchema>>({
-    resolver: zodResolver(formRegisterSchema)
+    resolver: zodResolver(formRegisterSchema),
   });
 
   function onSubmit(data: z.infer<typeof formRegisterSchema>) {
+    localStorage.setItem("user", JSON.stringify(data));
     setOpenPopup(true);
     console.log(data);
   }
@@ -56,14 +57,16 @@ export function RegisterForm() {
         />
       )}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-2">
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
               <FormItem>
+                <div className="min-h-[20px]">
+                  <FormMessage />
+                </div>
                 <FormLabel>Username</FormLabel>
-                <FormMessage />
                 <FormControl>
                   <Input placeholder="username" {...field} />
                 </FormControl>
@@ -95,7 +98,9 @@ export function RegisterForm() {
                 <FormControl>
                   <Input type="password" placeholder="********" {...field} />
                 </FormControl>
-                <FormMessage />
+                <div className="min-h-[20px]">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -146,36 +151,40 @@ export function LoginForm() {
   }
 
   return (
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-          <FormField
-            control={form.control}
-            name="userIdentificator"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username or Email</FormLabel>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+        <FormField
+          control={form.control}
+          name="userIdentificator"
+          render={({ field }) => (
+            <FormItem>
+              <div className="min-h-[20px]">
                 <FormMessage />
-                <FormControl>
-                  <Input placeholder="username or email" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
-                </FormControl>
+              </div>
+              <FormLabel>Username or Email</FormLabel>
+              <FormControl>
+                <Input placeholder="username or email" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="********" {...field} />
+              </FormControl>
+              <div className="min-h-[20px]">
                 <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+              </div>
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
   );
 }
