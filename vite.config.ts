@@ -8,8 +8,12 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
+      "@root": path.resolve(__dirname, "./"),
       "@": path.resolve(__dirname, "./src"),
+      "@components": path.resolve(__dirname, "./src/components"),
+      "@ui": path.resolve(__dirname, "./src/components/ui"),
     },
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
   },
   base: "/heroed/",
 });

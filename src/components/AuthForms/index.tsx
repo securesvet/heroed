@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "sonner";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -10,11 +11,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
+} from "@ui/form";
+import { Input } from "@ui/input";
+import { Button } from "@ui/button";
+import { Toaster } from "@ui/sonner";
 
 const formDefaultSchema = {
   username: z.string().min(3, {

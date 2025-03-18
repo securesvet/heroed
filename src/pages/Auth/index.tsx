@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { RegisterForm, LoginForm } from "../../components/AuthForms";
-import { Button } from "../../components/ui/button";
+import { RegisterForm, LoginForm } from "@components/AuthForms";
 import { FaTelegram } from "react-icons/fa";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@ui/button";
+import { Separator } from "@ui/separator";
 
 const Register = () => {
   return <RegisterOrLogin variant="register" />;

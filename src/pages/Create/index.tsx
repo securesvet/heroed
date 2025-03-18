@@ -4,13 +4,13 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@ui/carousel";
 
-const characterSprites = [
-  "/heroed/sprites/character1.png",
-  "/heroed/sprites/character2.png",
-  "/heroed/sprites/character3.png",
-];
+import char1 from "@/assets/sprites/character1.png";
+import char2 from "@/assets/sprites/character2.png";
+import char3 from "@/assets/sprites/character3.png";
+
+const characterSprites = [char1, char2, char3];
 
 const CharacterCreator = () => {
   return (

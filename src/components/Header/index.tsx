@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
+import { Button } from "@ui/button";
 import { useLocation } from "react-router-dom";
 import { ModeToggle } from "../mode-toggle";
 
