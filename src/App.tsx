@@ -1,9 +1,9 @@
 import "./App.css";
-import Create from "./components/Create";
+import Create from "./pages/Create";
 import Hero from "./components/Hero";
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import Layout from "./components/Layout";
-import { Login, Register } from "./components/Auth";
+import { Login, Register } from "./pages/Auth";
 import {
   Route,
   createBrowserRouter,

@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const formDefaultSchema = {
   username: z.string().min(3, {
@@ -33,10 +35,12 @@ export function RegisterForm() {
     resolver: zodResolver(formRegisterSchema),
   });
 
+  const [isRequestSent, setIsRequestSent] = useState(false);
   function onSubmit(data: z.infer<typeof formRegisterSchema>) {
     localStorage.setItem("user", JSON.stringify(data));
+    setIsRequestSent(true);
     toast("You have successfully registered", {
-      description: "Sunday, December 03, 2023 at 9:00 AM",
+      description: `${new Date().toLocaleString()}`,
       action: {
         label: "Undo",
         onClick: () => console.log("Undo"),
@@ -101,7 +105,10 @@ export function RegisterForm() {
               )}
             />
           </div>
-          <Button type="submit">Submit</Button>
+          <Button disabled={isRequestSent} type="submit">
+            {isRequestSent && <Loader2 className="animate-spin"/>}
+            Submit
+          </Button>
         </form>
       </Form>
     </>
@@ -116,11 +123,13 @@ const loginFormSchema = z.object({
 });
 
 export function LoginForm() {
+  const [isRequestSent, setIsRequestSent] = useState(false);
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
   });
 
   function onSubmit(data: z.infer<typeof loginFormSchema>) {
+    setIsRequestSent(true);
     console.log(data);
   }
 
@@ -162,7 +171,10 @@ export function LoginForm() {
             )}
           />
         </div>
-        <Button type="submit">Submit</Button>
+          <Button disabled={isRequestSent} type="submit">
+            {isRequestSent && <Loader2 className="animate-spin"/>}
+            Submit
+          </Button>
       </form>
     </Form>
   );

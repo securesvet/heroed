@@ -14,7 +14,7 @@ const characterSprites = [
 
 const CharacterCreator = () => {
   return (
-    <div className="h-[calc(100vh-var(--header-height))] grid place-items-center gap-2">
+    <div className="h-screen grid place-items-center gap-2">
       <Carousel className="flex justify-center items-center h-full w-1/2">
         <div className="w-40 h-40">
           <CarouselContent>
