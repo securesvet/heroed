@@ -18,9 +18,7 @@ const RegisterOrLogin = ({ variant }: { variant: "register" | "login" }) => {
       <div className="text-4xl font-bold">
         <h1>{isLogin ? "Sign in" : "Sign up"}</h1>
       </div>
-      <div className="h-72">
-        {isLogin ? <LoginForm /> : <RegisterForm />}
-      </div>
+      <div className="h-72">{isLogin ? <LoginForm /> : <RegisterForm />}</div>
       <Link to={link}>
         <Button
           variant={"link"}
