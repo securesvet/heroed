@@ -106,7 +106,7 @@ export function RegisterForm() {
             />
           </div>
           <Button disabled={isRequestSent} type="submit">
-            {isRequestSent && <Loader2 className="animate-spin"/>}
+            {isRequestSent && <Loader2 className="animate-spin" />}
             Submit
           </Button>
         </form>
@@ -171,10 +171,10 @@ export function LoginForm() {
             )}
           />
         </div>
-          <Button disabled={isRequestSent} type="submit">
-            {isRequestSent && <Loader2 className="animate-spin"/>}
-            Submit
-          </Button>
+        <Button disabled={isRequestSent} type="submit">
+          {isRequestSent && <Loader2 className="animate-spin" />}
+          Submit
+        </Button>
       </form>
     </Form>
   );
