@@ -16,18 +16,17 @@ const RegisterOrLogin = ({ variant }: { variant: "register" | "login" }) => {
   const isLogin = variant === "login";
   const link = isLogin ? "/signup" : "/login";
   return (
-    <>
-      <div className="flex justify-center items-center">
-        <div className="mt-[calc(var(--header-height)+25%)] w-72 flex flex-col items-center justify-center gap-4">
-          <div className="text-4xl font-bold">
-            <h1>{isLogin ? "Sign in" : "Sign up"}</h1>
-          </div>
-          <div className="h-72">
-            {isLogin ? <LoginForm /> : <RegisterForm />}
-          </div>
-        </div>
+    <div className="mt-[var(--header-height)] flex flex-col items-center justify-center h-[calc(100vh-var(--header-height))]">
+      {/* Sign in / Sign up text */}
+      <div className="text-4xl font-bold ">
+        <h1>{isLogin ? "Sign in" : "Sign up"}</h1>
       </div>
-      <div className="grid gap-4 place-items-center my-10">
+
+      {/* Login form / Register form */}
+      <div className="h-72">{isLogin ? <LoginForm /> : <RegisterForm />}</div>
+
+      {/* Other Auth methods */}
+      <div className="grid gap-4 place-items-center mt-5">
         <Link to={link}>
           <Button
             variant={"link"}
@@ -48,7 +47,7 @@ const RegisterOrLogin = ({ variant }: { variant: "register" | "login" }) => {
         </Link>
         <OtherAuthMethods />
       </div>
-    </>
+    </div>
   );
 };
 
