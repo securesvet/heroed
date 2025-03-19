@@ -85,31 +85,26 @@ const Inventory = () => {
   ];
   const hasTransitionedIn = useMountTransition(isMounted, 150);
   return (
-    <div>
+    <div className="my-4">
       <div className="flex justify-around items-center">
         <Button variant="outline" onClick={() => setIsMounted(!isMounted)}>
           <BsBackpack2Fill />
         </Button>
         <NewItemInventory />
       </div>
-      <div className="grid grid-cols-4">
-        <div className="max-w-40 max-h-40">
-          {(hasTransitionedIn || isMounted) &&
-            items.map(({ id, label }, index) => {
-              return (
-                <div
-                  className={cn(
-                    "transition-all -translate-y-1 opacity-0 ease-in-out",
-                    hasTransitionedIn && "translate-y-0 opacity-100",
-                    !isMounted && "-translate-y-1 opacity-0",
-                  )}
-                >
-                  <InventoryItem key={`${id}${index}`} label={label} />
-                </div>
-              );
-            })}
+      {(hasTransitionedIn || isMounted) && (
+        <div
+          className={cn(
+            "flex gap-4 transition-all -translate-y-1 opacity-0 ease-in-out",
+            hasTransitionedIn && "translate-y-0 opacity-100",
+            !isMounted && "-translate-y-1 opacity-0",
+          )}
+        >
+          {items.map(({ id, label }, index) => {
+            return <InventoryItem key={`${id}${index}`} label={label} />;
+          })}
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -128,11 +123,9 @@ const NewItemInventory = () => {
 
 const InventoryItem = ({ label }: { label?: string }) => {
   return (
-    <div className="aspect-square">
-      <Card className="hover:opacity-80 transition-opacity hover:cursor-pointer flex flex-col items-center justify-center">
-        <CardDescription>{label}</CardDescription>
-      </Card>
-    </div>
+    <Card className="p-5 hover:opacity-80 transition-opacity hover:cursor-pointer flex flex-col items-center justify-center">
+      <CardDescription>{label}</CardDescription>
+    </Card>
   );
 };
 
