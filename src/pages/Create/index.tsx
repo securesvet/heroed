@@ -1,5 +1,5 @@
 import { Input } from "@ui/input";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import { Label } from "@ui/label";
 import { Separator } from "@ui/separator";
 import { Avatar, AvatarFallback } from "@ui/avatar";
@@ -7,6 +7,8 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { BsBackpack2Fill } from "react-icons/bs";
 import { Button } from "@root/src/components/ui/button";
 import Hero from "./Hero";
+import { Card, CardDescription } from "@ui/card";
+import cup from "@/assets/sprites/items/cup.png";
 
 const CharacterCreator = () => {
   const labels = [
@@ -56,24 +58,51 @@ const AvatarHeader = () => {
   );
 };
 
+type ItemType = {
+  id: number;
+  label: string;
+  img: string;
+};
+
 const Inventory = () => {
-  const items: string[] = ["backpack"];
+  const items: ItemType[] = [
+    {
+      id: 1,
+      label: "Shield",
+      img: cup,
+    },
+  ];
   return (
     <div>
       <Button variant="outline">
         <BsBackpack2Fill />
       </Button>
-      {items.map((item, index) => {
-        return <InventoryItem key={`${item}${index}`} label={item} />;
-      })}
+      <div className="grid grid-cols-4">
+        {items.map(({ id, label, img }, index) => {
+          return (
+            <InventoryItem key={`${id}${index}`} label={label}>
+              <img src={img} />
+            </InventoryItem>
+          );
+        })}
+      </div>
     </div>
   );
 };
 
-const InventoryItem = ({ label }: { label?: string }) => {
+const InventoryItem = ({
+  label,
+  children,
+}: {
+  label?: string;
+  children?: ReactNode;
+}) => {
   return (
-    <div>
-      <p>{label}</p>
+    <div className="aspect-square">
+      <Card className="hover:opacity-80 transition-opacity hover:cursor-pointer flex flex-col items-center justify-center ">
+        {children}
+        <CardDescription>{label}</CardDescription>
+      </Card>
     </div>
   );
 };
