@@ -182,6 +182,7 @@ const Charachteristics = ({ label }: { label?: string }) => {
         <Label className="font-bold text-2xl">{label}</Label>
         <Input
           type="number"
+          pattern="\d*"
           className="w-10 h-10 p-0 text-center text-2xl md:text-2xl"
           max={30}
           value={value}
@@ -194,6 +195,7 @@ const Charachteristics = ({ label }: { label?: string }) => {
         <p>Check</p>
         <Input
           type="number"
+          pattern="\d*"
           className="w-10 h-10 p-0 text-center text-2xl md:text-2xl"
           max={10}
           min={-5}
@@ -203,6 +205,7 @@ const Charachteristics = ({ label }: { label?: string }) => {
         <p className="whitespace-nowrap">Save Throw</p>
         <Input
           type="number"
+          pattern="\d*"
           className="w-10 h-10 p-0 text-center text-2xl md:text-2xl"
           max={10}
           min={-5}
