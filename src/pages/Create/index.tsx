@@ -188,6 +188,7 @@ const Charachteristics = ({ label }: { label?: string }) => {
           value={value}
           onChange={handleChange}
           onBlur={handleBlur}
+          onFocus={(e) => e.target.select()}
         />
       </div>
       <Separator />
