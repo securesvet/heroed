@@ -1,5 +1,5 @@
 import { Input } from "@ui/input";
-import { ChangeEvent, ReactNode, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Label } from "@ui/label";
 import { Separator } from "@ui/separator";
 import { Avatar, AvatarFallback } from "@ui/avatar";
@@ -8,7 +8,9 @@ import { BsBackpack2Fill } from "react-icons/bs";
 import { Button } from "@root/src/components/ui/button";
 import Hero from "./Hero";
 import { Card, CardDescription } from "@ui/card";
-import cup from "@/assets/sprites/items/cup.png";
+import { FaPlus } from "react-icons/fa6";
+import { useMountTransition } from "@/hooks/useMountedTransition";
+import { cn } from "@root/src/lib/utils";
 
 const CharacterCreator = () => {
   const labels = [
@@ -45,15 +47,12 @@ const CharacterCreator = () => {
 const AvatarHeader = () => {
   return (
     <div className="flex">
-      <div className="flex gap-4 items-center">
-        <Avatar className="rounded-none ">
-          <AvatarImage
-            src={"https://avatars.githubusercontent.com/u/67125915?v=4"}
-          />
-          <AvatarFallback>SM</AvatarFallback>
-        </Avatar>
-        <Input className="text-xl" placeholder="Hero Name" />
-      </div>
+      <Avatar className="rounded-none ">
+        <AvatarImage
+          src={"https://avatars.githubusercontent.com/u/67125915?v=4"}
+        />
+        <AvatarFallback>SM</AvatarFallback>
+      </Avatar>
     </div>
   );
 };
@@ -61,46 +60,76 @@ const AvatarHeader = () => {
 type ItemType = {
   id: number;
   label: string;
-  img: string;
+  img?: string;
 };
 
 const Inventory = () => {
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const items: ItemType[] = [
     {
       id: 1,
       label: "Shield",
-      img: cup,
+    },
+    {
+      id: 2,
+      label: "Sword",
+    },
+    {
+      id: 3,
+      label: "Beer",
+    },
+    {
+      id: 4,
+      label: "Boots",
     },
   ];
+  const hasTransitionedIn = useMountTransition(isMounted, 150);
   return (
     <div>
-      <Button variant="outline">
-        <BsBackpack2Fill />
-      </Button>
+      <div className="flex justify-around items-center">
+        <Button variant="outline" onClick={() => setIsMounted(!isMounted)}>
+          <BsBackpack2Fill />
+        </Button>
+        <NewItemInventory />
+      </div>
       <div className="grid grid-cols-4">
-        {items.map(({ id, label, img }, index) => {
-          return (
-            <InventoryItem key={`${id}${index}`} label={label}>
-              <img src={img} />
-            </InventoryItem>
-          );
-        })}
+        <div className="max-w-40 max-h-40">
+          {(hasTransitionedIn || isMounted) &&
+            items.map(({ id, label }, index) => {
+              return (
+                <div
+                  className={cn(
+                    "transition-all -translate-y-1 opacity-0 ease-in-out",
+                    hasTransitionedIn && "translate-y-0 opacity-100",
+                    !isMounted && "-translate-y-1 opacity-0",
+                  )}
+                >
+                  <InventoryItem key={`${id}${index}`} label={label} />
+                </div>
+              );
+            })}
+        </div>
       </div>
     </div>
   );
 };
 
-const InventoryItem = ({
-  label,
-  children,
-}: {
-  label?: string;
-  children?: ReactNode;
-}) => {
+const NewItemInventory = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  return (
+    <div>
+      <Button variant="outline" onClick={() => setIsOpen(!isOpen)}>
+        <FaPlus />
+      </Button>
+      {isOpen && <Input placeholder="Item name" />}
+    </div>
+  );
+};
+
+const InventoryItem = ({ label }: { label?: string }) => {
   return (
     <div className="aspect-square">
-      <Card className="hover:opacity-80 transition-opacity hover:cursor-pointer flex flex-col items-center justify-center ">
-        {children}
+      <Card className="hover:opacity-80 transition-opacity hover:cursor-pointer flex flex-col items-center justify-center">
         <CardDescription>{label}</CardDescription>
       </Card>
     </div>
