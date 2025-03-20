@@ -8,7 +8,7 @@ const Home = () => {
         <div className="m-4">
           <h1 className="text-3xl">Create your own Hero for game sessions</h1>
         </div>
-        <Link to="/create">
+        <Link to="/hero">
           <Button>Create</Button>
         </Link>
       </div>
@@ -16,4 +16,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export { Home };

@@ -1,9 +1,9 @@
 import "./App.css";
-import Create from "./pages/Create";
-import Home from "./pages/Home";
-import { Login, Register } from "./pages/Auth";
-import Hero from "@components/Hero";
 import Layout from "@components/Layout";
+import { Heroes } from "./pages/Heroes";
+import { DndCreator } from "./pages/DndCreator";
+import { Home } from "./pages/Home";
+import { Login, Register } from "./pages/Auth";
 import { ThemeProvider } from "@components/theme-provider";
 import {
   Route,
@@ -11,6 +11,7 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
+import { CreateHero } from "./pages/CreateHero";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,8 +20,9 @@ const router = createBrowserRouter(
         <Route index element={<Home />} />
         <Route path="/signup" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/heroes" element={<Hero />} />
-        <Route path="/create" element={<Create />} />
+        <Route path="/hero/new" element={<CreateHero />} />
+        <Route path="/hero" element={<DndCreator />} />
+        <Route path="/heroes" element={<Heroes />} />
       </Route>
     </>,
   ),

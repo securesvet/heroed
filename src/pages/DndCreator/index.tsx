@@ -3,16 +3,11 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Label } from "@ui/label";
 import { Separator } from "@ui/separator";
 import { Avatar, AvatarFallback } from "@ui/avatar";
-import { AvatarImage } from "@radix-ui/react-avatar";
-import { BsBackpack2Fill } from "react-icons/bs";
-import { Button } from "@root/src/components/ui/button";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Hero from "./Hero";
-import { Card, CardDescription } from "@ui/card";
-import { FaPlus } from "react-icons/fa6";
-import { useMountTransition } from "@/hooks/useMountedTransition";
-import { cn } from "@root/src/lib/utils";
+import Inventory from "./Inventory";
 
-const CharacterCreator = () => {
+const DndCreator = () => {
   const labels = [
     "Strength",
     "Dexterity",
@@ -24,15 +19,14 @@ const CharacterCreator = () => {
 
   return (
     <div className="my-[var(--header-height)]">
+      <AvatarHeader />
       <div className="grid grid-cols-1 place-items-center md:grid-cols-3">
-        <div className="">
+        <div className="mt-5 w-full h-full">
           <Hero />
           <Inventory />
         </div>
         <div className="grid">
-          <div className="py-4">
-            <AvatarHeader />
-          </div>
+          <div className="py-4">{/* <AvatarHeader /> */}</div>
           <div className="flex flex-col gap-4">
             {labels.map((label, index) => (
               <Charachteristics key={index} label={label.toUpperCase()} />
@@ -46,91 +40,17 @@ const CharacterCreator = () => {
 
 const AvatarHeader = () => {
   return (
-    <div className="flex">
-      <Avatar className="rounded-none ">
-        <AvatarImage
-          src={"https://avatars.githubusercontent.com/u/67125915?v=4"}
-        />
+    <div className="flex justify-around items-center">
+      <Avatar>
         <AvatarFallback>SM</AvatarFallback>
       </Avatar>
+      <p>Your Name</p>
     </div>
   );
 };
 
-type ItemType = {
-  id: number;
-  label: string;
-  img?: string;
-};
-
-const Inventory = () => {
-  const [isMounted, setIsMounted] = useState<boolean>(false);
-  const items: ItemType[] = [
-    {
-      id: 1,
-      label: "Shield",
-    },
-    {
-      id: 2,
-      label: "Sword",
-    },
-    {
-      id: 3,
-      label: "Beer",
-    },
-    {
-      id: 4,
-      label: "Boots",
-    },
-  ];
-  const hasTransitionedIn = useMountTransition(isMounted, 150);
-  return (
-    <div className="my-4">
-      <div className="flex justify-around items-center">
-        <Button variant="outline" onClick={() => setIsMounted(!isMounted)}>
-          <BsBackpack2Fill />
-        </Button>
-        <NewItemInventory />
-      </div>
-      {(hasTransitionedIn || isMounted) && (
-        <div
-          className={cn(
-            "flex gap-4 transition-all -translate-y-1 opacity-0 ease-in-out",
-            hasTransitionedIn && "translate-y-0 opacity-100",
-            !isMounted && "-translate-y-1 opacity-0",
-          )}
-        >
-          {items.map(({ id, label }, index) => {
-            return <InventoryItem key={`${id}${index}`} label={label} />;
-          })}
-        </div>
-      )}
-    </div>
-  );
-};
-
-const NewItemInventory = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  return (
-    <div>
-      <Button variant="outline" onClick={() => setIsOpen(!isOpen)}>
-        <FaPlus />
-      </Button>
-      {isOpen && <Input placeholder="Item name" />}
-    </div>
-  );
-};
-
-const InventoryItem = ({ label }: { label?: string }) => {
-  return (
-    <Card className="p-5 hover:opacity-80 transition-opacity hover:cursor-pointer flex flex-col items-center justify-center">
-      <CardDescription>{label}</CardDescription>
-    </Card>
-  );
-};
-
-const Charachteristics = ({ label }: { label?: string }) => {
-  const [value, setValue] = useState<string>("10");
+const Charachteristics = ({ label }: { label: string }) => {
+  const [value, setValue] = useLocalStorage<string>(label, "10");
 
   const [check, setCheck] = useState<string>("0");
 
@@ -142,7 +62,7 @@ const Charachteristics = ({ label }: { label?: string }) => {
 
     // Remove leading zeros while typing
     if (Math.abs(Number(value)).toString().startsWith("0")) {
-      setValue((value) => value.slice(1));
+      setValue((value: string) => value.slice(1));
     }
 
     const valueInput = Math.max(
@@ -211,4 +131,4 @@ const Charachteristics = ({ label }: { label?: string }) => {
   );
 };
 
-export default CharacterCreator;
+export { DndCreator };
