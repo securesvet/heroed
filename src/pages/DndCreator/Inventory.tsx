@@ -4,6 +4,7 @@ import { Button } from "@root/src/components/ui/button";
 import Input from "@root/src/components/Input";
 import { Card, CardDescription } from "@root/src/components/ui/card";
 import { Transition } from "@root/src/components/Transition";
+import { RxCross2 } from "react-icons/rx";
 
 type ItemType = {
   id: number;
@@ -68,9 +69,18 @@ const NewItemInventory = ({
 
 const InventoryItem = ({ label }: { label?: string }) => {
   return (
-    <Card className="p-5 hover:opacity-80 transition-opacity hover:cursor-pointer flex flex-col items-center justify-center">
-      <CardDescription>{label}</CardDescription>
-    </Card>
+    <div>
+      <Card className="p-5 relative">
+        <div className="w-10 absolute top-0 right-0">
+          <Button className="" variant="destructive">
+            <RxCross2 />
+          </Button>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <CardDescription>{label}</CardDescription>
+        </div>
+      </Card>
+    </div>
   );
 };
 

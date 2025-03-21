@@ -21,7 +21,7 @@ const DndCreator = () => {
     <div className="my-[var(--header-height)]">
       <AvatarHeader />
       <div className="grid grid-cols-1 place-items-center md:grid-cols-3">
-        <div className="mt-5 w-full h-full">
+        <div className="w-full h-full">
           <Hero />
           <Inventory />
         </div>
