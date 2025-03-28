@@ -9,7 +9,9 @@ import { addItem, deleteItem, ShopState } from "@root/src/store";
 
 const Inventory = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
-  const shopItems = useSelector((state: ShopState) => state.items);
+  const shopItems = useSelector(
+    (state: { shop: ShopState }) => state.shop.items,
+  );
   const isInventoryEmpty = shopItems.length === 0;
   return (
     <div className="my-4">
@@ -39,24 +41,20 @@ const Inventory = () => {
 const NewItemInventory = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
-  const itemsLength = useSelector((state: ShopState) => state.items.length);
-
+  const handleOnClick = () => {
+    const input = inputRef.current;
+    if (!input) return;
+    dispatch(
+      addItem({
+        title: input.value,
+        price: 10,
+      }),
+    );
+  };
   return (
     <div className="flex gap-2">
       <Input placeholder="Item name" ref={inputRef} />
-      <Button
-        onClick={() =>
-          dispatch(
-            addItem({
-              id: itemsLength + 1,
-              title: inputRef.current!.value,
-              price: 10,
-            }),
-          )
-        }
-      >
-        Add
-      </Button>
+      <Button onClick={handleOnClick}>Add</Button>
     </div>
   );
 };

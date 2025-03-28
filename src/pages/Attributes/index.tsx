@@ -5,17 +5,13 @@ import { Separator } from "@ui/separator";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Hero from "./Hero";
 import Inventory from "./Inventory";
+import { useSelector } from "react-redux";
+import { AttributesState } from "@root/src/store";
 
 const DndCreator = () => {
-  const labels = [
-    "Strength",
-    "Dexterity",
-    "Constitution",
-    "Intelligence",
-    "Wisdom",
-    "Charisma",
-  ];
-
+  const attributes = useSelector(
+    (store: { attributes: AttributesState }) => store.attributes,
+  );
   return (
     <div className="my-[var(--header-height)]">
       <div className="grid grid-cols-1 place-items-center md:grid-cols-3">
@@ -26,8 +22,11 @@ const DndCreator = () => {
         <div className="grid">
           <div className="py-4"></div>
           <div className="flex flex-col gap-4">
-            {labels.map((label, index) => (
-              <Charachteristics key={index} label={label.toUpperCase()} />
+            {attributes.map((attribute, index) => (
+              <Charachteristics
+                key={index}
+                label={attribute.name.toUpperCase()}
+              />
             ))}
           </div>
         </div>
@@ -38,16 +37,17 @@ const DndCreator = () => {
 
 const Charachteristics = ({ label }: { label: string }) => {
   const [value, setValue] = useLocalStorage<string>(label, "10");
-
   const [check, setCheck] = useState<string>("0");
-
   const [saveThrow, setSavingThrow] = useState<string>("0");
+
+  const attributes = useSelector(
+    (store: { attributes: AttributesState }) => store.attributes,
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { value, min, max } = e.target;
 
-    // Remove leading zeros while typing
     if (Math.abs(Number(value)).toString().startsWith("0")) {
       setValue((value: string) => value.slice(1));
     }
@@ -65,7 +65,6 @@ const Charachteristics = ({ label }: { label: string }) => {
       -5,
       Math.min(10, Math.floor((Number(value) - 10) / 2)),
     ).toString();
-
     setCheck(checkValue);
     setSavingThrow(checkValue);
   }, [value]);
@@ -75,6 +74,10 @@ const Charachteristics = ({ label }: { label: string }) => {
       setValue("10");
     }
   };
+
+  const subAttrs = attributes.find(
+    (attr) => attr.name.toLowerCase() === label.toLowerCase(),
+  )?.children;
 
   return (
     <div className="flex flex-col gap-4">
@@ -114,6 +117,12 @@ const Charachteristics = ({ label }: { label: string }) => {
           disabled
         />
       </div>
+      {subAttrs?.map((attributes, index) => (
+        <div key={index}>
+          <p>{attributes.name}</p>
+          <p>{attributes.value}</p>
+        </div>
+      ))}
     </div>
   );
 };
