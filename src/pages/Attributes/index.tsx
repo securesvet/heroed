@@ -2,7 +2,6 @@ import { Input } from "@ui/input";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Label } from "@ui/label";
 import { Separator } from "@ui/separator";
-import { Avatar, AvatarFallback } from "@ui/avatar";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Hero from "./Hero";
 import Inventory from "./Inventory";
@@ -19,14 +18,13 @@ const DndCreator = () => {
 
   return (
     <div className="my-[var(--header-height)]">
-      <AvatarHeader />
       <div className="grid grid-cols-1 place-items-center md:grid-cols-3">
         <div className="w-full h-full">
           <Hero />
           <Inventory />
         </div>
         <div className="grid">
-          <div className="py-4">{/* <AvatarHeader /> */}</div>
+          <div className="py-4"></div>
           <div className="flex flex-col gap-4">
             {labels.map((label, index) => (
               <Charachteristics key={index} label={label.toUpperCase()} />
@@ -34,17 +32,6 @@ const DndCreator = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const AvatarHeader = () => {
-  return (
-    <div className="flex justify-around items-center">
-      <Avatar>
-        <AvatarFallback>SM</AvatarFallback>
-      </Avatar>
-      <p>Your Name</p>
     </div>
   );
 };

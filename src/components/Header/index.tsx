@@ -9,7 +9,7 @@ const Header = () => {
     <div className="fixed top-0 left-0 right-0 z-10">
       <div className="flex justify-between items-center w-full h-[var(--header-height)] bg-primary-foreground">
         <div className="ml-4">
-          <Link to="/">Header</Link>
+          <Link to="/">heroed</Link>
         </div>
         <div className="flex items-center justify-evenly w-60">
           <div className="flex w-38 justify-end">

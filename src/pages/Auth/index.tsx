@@ -18,7 +18,7 @@ const RegisterOrLogin = ({ variant }: { variant: "register" | "login" }) => {
   return (
     <div className="mt-[var(--header-height)] flex flex-col items-center justify-center h-[calc(100vh-var(--header-height))]">
       {/* Sign in / Sign up text */}
-      <div className="text-4xl font-bold ">
+      <div className="text-4xl font-bold mb-5">
         <h1>{isLogin ? "Sign in" : "Sign up"}</h1>
       </div>
 

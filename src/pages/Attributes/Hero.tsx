@@ -3,6 +3,7 @@ import { Button } from "@ui/button";
 import { Input } from "@ui/input";
 import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { FaCoins } from "react-icons/fa";
 
 const Hero = () => {
   return (
@@ -11,6 +12,7 @@ const Hero = () => {
         <Input className="text-xl" placeholder="Hero Name" />
         <div className="relative">
           <div className="absolute top-0 right-0">
+            <Money amount={0} />
             <Link to="/hero/new">
               <Button
                 variant="link"
@@ -26,6 +28,18 @@ const Hero = () => {
         </div>
       </div>
     </>
+  );
+};
+
+const Money = ({ amount = 0 }: { amount: number }) => {
+  return (
+    <Button
+      className="flex items-center gap-2 justify-center"
+      variant="secondary"
+    >
+      <FaCoins />
+      {amount}
+    </Button>
   );
 };
 

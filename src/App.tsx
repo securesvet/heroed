@@ -1,7 +1,7 @@
 import "./App.css";
 import Layout from "@components/Layout";
 import { Heroes } from "./pages/Heroes";
-import { DndCreator } from "./pages/DndCreator";
+import { DndCreator } from "./pages/Attributes";
 import { Home } from "./pages/Home";
 import { Login, Register } from "./pages/Auth";
 import { ThemeProvider } from "@components/theme-provider";
@@ -12,6 +12,10 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { CreateHero } from "./pages/CreateHero";
+import Users from "./pages/Users";
+import Store from "./pages/Store";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +27,8 @@ const router = createBrowserRouter(
         <Route path="/hero/new" element={<CreateHero />} />
         <Route path="/hero" element={<DndCreator />} />
         <Route path="/heroes" element={<Heroes />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/store" element={<Store />} />
       </Route>
     </>,
   ),
@@ -33,7 +39,9 @@ function App() {
   return (
     <>
       <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-        <RouterProvider router={router} />
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
       </ThemeProvider>
     </>
   );

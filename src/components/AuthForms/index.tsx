@@ -17,9 +17,14 @@ import { Button } from "@ui/button";
 import { Toaster } from "@ui/sonner";
 
 const formDefaultSchema = {
-  username: z.string().min(3, {
-    message: "at least 3 characters long",
-  }),
+  username: z
+    .string()
+    .min(3, {
+      message: "at least 3 characters long",
+    })
+    .max(32, {
+      message: "at most 32 characters long",
+    }),
   email: z.string().email(),
   password: z.string().min(8, {
     message: "at least 8 characters long",
@@ -80,11 +85,7 @@ export function RegisterForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="example@gmail.com"
-                      {...field}
-                    />
+                    <Input placeholder="example@gmail.com" {...field} />
                   </FormControl>
                 </FormItem>
               )}
