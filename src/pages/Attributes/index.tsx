@@ -1,21 +1,16 @@
 import { Input } from "@ui/input";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
 import { Label } from "@ui/label";
 import { Separator } from "@ui/separator";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Hero from "./Hero";
 import Inventory from "./Inventory";
+import { useDispatch, useSelector } from "react-redux";
+import { AttributesState, changeValue } from "@root/src/store";
 
 const DndCreator = () => {
-  const labels = [
-    "Strength",
-    "Dexterity",
-    "Constitution",
-    "Intelligence",
-    "Wisdom",
-    "Charisma",
-  ];
-
+  const attributes = useSelector(
+    (store: { attributes: AttributesState }) => store.attributes,
+  );
   return (
     <div className="my-[var(--header-height)]">
       <div className="grid grid-cols-1 place-items-center md:grid-cols-3">
@@ -26,8 +21,11 @@ const DndCreator = () => {
         <div className="grid">
           <div className="py-4"></div>
           <div className="flex flex-col gap-4">
-            {labels.map((label, index) => (
-              <Charachteristics key={index} label={label.toUpperCase()} />
+            {attributes.map((attribute, index) => (
+              <Charachteristics
+                key={index}
+                label={attribute.name.toUpperCase()}
+              />
             ))}
           </div>
         </div>
@@ -37,43 +35,53 @@ const DndCreator = () => {
 };
 
 const Charachteristics = ({ label }: { label: string }) => {
-  const [value, setValue] = useLocalStorage<string>(label, "10");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
+  const currentAttribute = useSelector(
+    (store: { attributes: AttributesState }) =>
+      store.attributes.find(
+        (attr) => attr.name.toLowerCase() === label.toLowerCase(),
+      ),
+  );
 
-  const [check, setCheck] = useState<string>("0");
+  useEffect(() => {
+    if (inputRef.current && currentAttribute) {
+      inputRef.current.value = currentAttribute.value.toString();
+    }
+  }, [currentAttribute]);
 
-  const [saveThrow, setSavingThrow] = useState<string>("0");
+  console.log(currentAttribute);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!inputRef.current) return;
     e.preventDefault();
     const { value, min, max } = e.target;
 
-    // Remove leading zeros while typing
     if (Math.abs(Number(value)).toString().startsWith("0")) {
-      setValue((value: string) => value.slice(1));
+      inputRef.current.value = value.slice(1);
     }
 
-    const valueInput = Math.max(
+    inputRef.current.value = Math.max(
       Number(min),
       Math.min(Number(max), Number(value)),
     ).toString();
 
-    setValue(valueInput);
+    dispatch(
+      changeValue({ name: label, value: Number(inputRef.current.value) }),
+    );
   };
 
-  useEffect(() => {
-    const checkValue = Math.max(
-      -5,
-      Math.min(10, Math.floor((Number(value) - 10) / 2)),
-    ).toString();
-
-    setCheck(checkValue);
-    setSavingThrow(checkValue);
-  }, [value]);
-
   const handleBlur = () => {
-    if (value === undefined || value == "0") {
-      setValue("10");
+    if (!inputRef.current) return;
+    if (
+      inputRef.current.value === undefined ||
+      inputRef.current.value === "0"
+    ) {
+      inputRef.current.value = "10";
     }
+    dispatch(
+      changeValue({ name: label, value: Number(inputRef.current.value) }),
+    );
   };
 
   return (
@@ -85,7 +93,8 @@ const Charachteristics = ({ label }: { label: string }) => {
           pattern="\d*"
           className="w-10 h-10 p-0 text-center text-2xl md:text-2xl"
           max={30}
-          value={value}
+          min={0}
+          ref={inputRef}
           onChange={handleChange}
           onBlur={handleBlur}
           onFocus={(e) => e.target.select()}
@@ -98,9 +107,7 @@ const Charachteristics = ({ label }: { label: string }) => {
           type="number"
           pattern="\d*"
           className="w-10 h-10 p-0 text-center text-2xl md:text-2xl"
-          max={10}
-          min={-5}
-          value={check}
+          value={currentAttribute?.checkValue}
           disabled
         />
         <p className="whitespace-nowrap">Save Throw</p>
@@ -108,12 +115,22 @@ const Charachteristics = ({ label }: { label: string }) => {
           type="number"
           pattern="\d*"
           className="w-10 h-10 p-0 text-center text-2xl md:text-2xl"
-          max={10}
-          min={-5}
-          value={saveThrow}
+          value={currentAttribute?.saveThrowValue}
           disabled
         />
       </div>
+      {currentAttribute?.children.map((subAttributes, index) => (
+        <div
+          key={index}
+          className="flex justify-between items-center bg-primary-foreground p-2 rounded-xl hover:opacity-85 hover:cursor-pointer"
+        >
+          <p className="">{subAttributes.name}</p>
+          <p className="font-bold">
+            {subAttributes.value > 0 ? "+" : ""}
+            {subAttributes.value}
+          </p>
+        </div>
+      ))}
     </div>
   );
 };
