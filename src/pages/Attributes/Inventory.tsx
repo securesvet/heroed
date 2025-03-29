@@ -19,12 +19,11 @@ const Inventory = () => {
         <Button variant="outline" onClick={() => setIsMounted(!isMounted)}>
           <BsBackpack2Fill />
         </Button>
-        <div>
-          <NewItemInventory />
-        </div>
+        <div></div>
       </div>
       <Transition isMounted={isMounted}>
         <Card className="flex gap-4 flex-wrap mt-2">
+          <NewItemInventory />
           {isInventoryEmpty ? (
             <p className="text-center">Inventory is empty</p>
           ) : (
@@ -50,10 +49,20 @@ const NewItemInventory = () => {
         price: 10,
       }),
     );
+    input.value = "";
+  };
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleOnClick();
+    }
   };
   return (
     <div className="flex gap-2">
-      <Input placeholder="Item name" ref={inputRef} />
+      <Input
+        placeholder="Item name"
+        onKeyDown={handleOnKeyDown}
+        ref={inputRef}
+      />
       <Button onClick={handleOnClick}>Add</Button>
     </div>
   );

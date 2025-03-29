@@ -1,12 +1,11 @@
 import { Input } from "@ui/input";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
 import { Label } from "@ui/label";
 import { Separator } from "@ui/separator";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Hero from "./Hero";
 import Inventory from "./Inventory";
-import { useSelector } from "react-redux";
-import { AttributesState } from "@root/src/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AttributesState, changeValue } from "@root/src/store";
 
 const DndCreator = () => {
   const attributes = useSelector(
@@ -36,48 +35,54 @@ const DndCreator = () => {
 };
 
 const Charachteristics = ({ label }: { label: string }) => {
-  const [value, setValue] = useLocalStorage<string>(label, "10");
-  const [check, setCheck] = useState<string>("0");
-  const [saveThrow, setSavingThrow] = useState<string>("0");
-
-  const attributes = useSelector(
-    (store: { attributes: AttributesState }) => store.attributes,
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
+  const currentAttribute = useSelector(
+    (store: { attributes: AttributesState }) =>
+      store.attributes.find(
+        (attr) => attr.name.toLowerCase() === label.toLowerCase(),
+      ),
   );
 
+  useEffect(() => {
+    if (inputRef.current && currentAttribute) {
+      inputRef.current.value = currentAttribute.value.toString();
+    }
+  }, [currentAttribute]);
+
+  console.log(currentAttribute);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!inputRef.current) return;
     e.preventDefault();
     const { value, min, max } = e.target;
 
     if (Math.abs(Number(value)).toString().startsWith("0")) {
-      setValue((value: string) => value.slice(1));
+      inputRef.current.value = value.slice(1);
     }
 
-    const valueInput = Math.max(
+    inputRef.current.value = Math.max(
       Number(min),
       Math.min(Number(max), Number(value)),
     ).toString();
 
-    setValue(valueInput);
+    dispatch(
+      changeValue({ name: label, value: Number(inputRef.current.value) }),
+    );
   };
-
-  useEffect(() => {
-    const checkValue = Math.max(
-      -5,
-      Math.min(10, Math.floor((Number(value) - 10) / 2)),
-    ).toString();
-    setCheck(checkValue);
-    setSavingThrow(checkValue);
-  }, [value]);
 
   const handleBlur = () => {
-    if (value === undefined || value == "0") {
-      setValue("10");
+    if (!inputRef.current) return;
+    if (
+      inputRef.current.value === undefined ||
+      inputRef.current.value === "0"
+    ) {
+      inputRef.current.value = "10";
     }
+    dispatch(
+      changeValue({ name: label, value: Number(inputRef.current.value) }),
+    );
   };
-
-  const subAttrs = attributes.find(
-    (attr) => attr.name.toLowerCase() === label.toLowerCase(),
-  )?.children;
 
   return (
     <div className="flex flex-col gap-4">
@@ -88,7 +93,8 @@ const Charachteristics = ({ label }: { label: string }) => {
           pattern="\d*"
           className="w-10 h-10 p-0 text-center text-2xl md:text-2xl"
           max={30}
-          value={value}
+          min={0}
+          ref={inputRef}
           onChange={handleChange}
           onBlur={handleBlur}
           onFocus={(e) => e.target.select()}
@@ -101,9 +107,7 @@ const Charachteristics = ({ label }: { label: string }) => {
           type="number"
           pattern="\d*"
           className="w-10 h-10 p-0 text-center text-2xl md:text-2xl"
-          max={10}
-          min={-5}
-          value={check}
+          value={currentAttribute?.checkValue}
           disabled
         />
         <p className="whitespace-nowrap">Save Throw</p>
@@ -111,16 +115,20 @@ const Charachteristics = ({ label }: { label: string }) => {
           type="number"
           pattern="\d*"
           className="w-10 h-10 p-0 text-center text-2xl md:text-2xl"
-          max={10}
-          min={-5}
-          value={saveThrow}
+          value={currentAttribute?.saveThrowValue}
           disabled
         />
       </div>
-      {subAttrs?.map((attributes, index) => (
-        <div key={index}>
-          <p>{attributes.name}</p>
-          <p>{attributes.value}</p>
+      {currentAttribute?.children.map((subAttributes, index) => (
+        <div
+          key={index}
+          className="flex justify-between items-center bg-primary-foreground p-2 rounded-xl hover:opacity-85 hover:cursor-pointer"
+        >
+          <p className="">{subAttributes.name}</p>
+          <p className="font-bold">
+            {subAttributes.value > 0 ? "+" : ""}
+            {subAttributes.value}
+          </p>
         </div>
       ))}
     </div>
