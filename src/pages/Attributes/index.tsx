@@ -13,14 +13,14 @@ const DndCreator = () => {
   );
   return (
     <div className="my-[var(--header-height)]">
-      <div className="grid grid-cols-1 place-items-center md:grid-cols-3">
+      <div className="grid grid-cols-1 place-items-center md:grid-cols-[1fr_5fr]">
         <div className="w-full h-full">
           <Hero />
           <Inventory />
         </div>
         <div className="grid">
           <div className="py-4"></div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col flex-wrap h-[900px] gap-4">
             {attributes.map((attribute, index) => (
               <Charachteristics
                 key={index}
@@ -119,18 +119,20 @@ const Charachteristics = ({ label }: { label: string }) => {
           disabled
         />
       </div>
-      {currentAttribute?.children.map((subAttributes, index) => (
-        <div
-          key={index}
-          className="flex justify-between items-center bg-primary-foreground p-2 rounded-xl hover:opacity-85 hover:cursor-pointer"
-        >
-          <p className="">{subAttributes.name}</p>
-          <p className="font-bold">
-            {subAttributes.value > 0 ? "+" : ""}
-            {subAttributes.value}
-          </p>
-        </div>
-      ))}
+      <div className="flex flex-col gap-2">
+        {currentAttribute?.children.map((subAttributes, index) => (
+          <div
+            key={index}
+            className="flex justify-between items-center bg-primary-foreground p-2 rounded-xl hover:opacity-85 hover:cursor-pointer"
+          >
+            <p>{subAttributes.name}</p>
+            <p className="font-bold">
+              {subAttributes.value > 0 ? "+" : ""}
+              {subAttributes.value}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

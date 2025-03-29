@@ -52,6 +52,13 @@ const attributesSlice = createSlice({
       ],
     },
     {
+      name: "Constitution",
+      value: 10,
+      children: [],
+      saveThrowValue: 0,
+      checkValue: 0,
+    },
+    {
       name: "Dexterity",
       value: 10,
       saveThrowValue: 0,
@@ -70,13 +77,6 @@ const attributesSlice = createSlice({
           value: 0,
         },
       ],
-    },
-    {
-      name: "Constitution",
-      value: 10,
-      children: [],
-      saveThrowValue: 0,
-      checkValue: 0,
     },
     {
       name: "Intelligence",
